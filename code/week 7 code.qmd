@@ -1,0 +1,99 @@
+---
+title: "week 7 code"
+author: "celine"
+format: html
+execute: 
+  warning: false #gets rid of all the warnings
+  message: false 
+---
+
+#Set up
+
+```{r libraries}
+library(tidyverse)
+library(here)
+library(lterdatasampler)
+library(performance)
+library(broom)
+library(flextable)
+library(ggeffects)
+library(car)
+library(naniar)
+
+
+
+```
+#linear models
+How does stem length predict stem dry mass?
+```{r filtering-data}
+maples_data <- hbr_maples |>
+  filter(year == 2003 & watershed == "Reference")
+```
+
+Visualizing missing data
+
+```{r missing-data-vis}
+gg_miss_var(maples_data)
+
+```
+
+Create an exploratory data visualization:
+```{r explore-data-vis}
+ggplot(data = maples_data, aes(x = stem_length, y = stem_dry_mass)) +
+  geom_point()
+
+```
+Let's try a model:
+```{r linear-model-maples}
+maples_model <- lm(stem_dry_mass ~ stem_length, data = maples_data) #lm is to write a formula
+
+maples_model
+```
+
+
+Check assumptions:
+
+1. linear relationship between variables: yes! (used the exploratory data visualization to check that)
+2. independence of errors: yes!
+3. (making that assumption based on how the data were collected)
+4. homoskedasticity of error: yes! (making the decision from residuals vs fitted plot/scale-location plots)
+4. normally distributed errors: yes! (looking at QQ plot of residuals)
+
+
+```{r checking-assumptions} 
+par(mfrow= c(2,2))
+plot(maples_model)
+
+
+```
+
+
+turn off the 2x2 grid:
+```{r turning-off-the-grid}
+dev.off()
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
